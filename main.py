@@ -1,21 +1,13 @@
-from database import Base, engine, get_db
 from fastapi import Depends, FastAPI, HTTPException
-from models import Ticket
-from pydantic import BaseModel
 from sqlalchemy.orm import Session
+
+from database import Base, engine, get_db
+from models import Ticket
+from schemas import TicketCreate, TicketResponse
 
 app = FastAPI()
 
 Base.metadata.create_all(bind=engine)
-
-
-class TicketCreate(BaseModel):
-    title: str
-    description: str
-
-
-class TicketResponse(TicketCreate):
-    id: str
 
 
 @app.post("/tickets", response_model=TicketResponse)
