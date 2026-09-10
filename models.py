@@ -1,9 +1,12 @@
-from sqlalchemy import Sequence, String
+from sqlalchemy import Sequence, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from database import Base
 
-ticket_id_sequence = Sequence("ticket_id_sequence", start=1001)
+ticket_id_sequence = Sequence(
+    "ticket_id_sequence",
+    start=1001,
+)
 
 
 class Ticket(Base):
@@ -14,6 +17,8 @@ class Ticket(Base):
         primary_key=True,
         server_default=ticket_id_sequence.next_value(),
     )
+
+    message: Mapped[str] = mapped_column(Text)
 
     category: Mapped[str] = mapped_column(String(50))
     priority: Mapped[str] = mapped_column(String(20))

@@ -24,7 +24,16 @@ class TicketStatus(str, Enum):
     manual_review_required = "manual_review_required"
 
 
+class AssignedTeam(str, Enum):
+    platform_operations = "platform-operations"
+    customer_support = "customer-support"
+    security = "security"
+    networking = "networking"
+    database = "database"
+
+
 class TicketCreate(BaseModel):
+    message: str
     category: TicketCategory
     priority: TicketPriority
     assigned_team: str = Field(alias="assignedTeam")
@@ -42,5 +51,13 @@ class TicketResponse(BaseModel):
     category: TicketCategory
     priority: TicketPriority
     assigned_team: str = Field(alias="assignedTeam")
+    summary: str
+    status: TicketStatus
+
+
+class TicketClassification(BaseModel):
+    category: TicketCategory
+    priority: TicketPriority
+    assigned_team: AssignedTeam
     summary: str
     status: TicketStatus

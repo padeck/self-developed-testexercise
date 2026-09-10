@@ -1,6 +1,7 @@
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 
+from ai_service import classify_ticket
 from database import Base, engine, get_db
 from models import Ticket
 from schemas import TicketCreate, TicketResponse
@@ -15,12 +16,15 @@ def create_ticket(
     ticket: TicketCreate,
     db: Session = Depends(get_db),
 ):
+    classification = classify_ticket(ticket.message)
+
     new_ticket = Ticket(
-        category=ticket.category.value,
-        priority=ticket.priority.value,
-        assigned_team=ticket.assigned_team,
-        summary=ticket.summary,
-        status=ticket.status.value,
+        message=ticket.message,
+        category=classification.category.value,
+        priority=classification.priority.value,
+        assigned_team=classification.assigned_team,
+        summary=classification.summary,
+        status=classification.status.value,
     )
 
     db.add(new_ticket)
