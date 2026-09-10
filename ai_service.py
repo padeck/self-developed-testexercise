@@ -1,10 +1,9 @@
-import os
-
 from openai import OpenAI
 
+from config import settings
 from schemas import TicketClassification, TicketPriority, TicketStatus
 
-client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+client = OpenAI(api_key=settings.openai_api_key)
 
 instructions = """
 You are a support ticket classification system.
