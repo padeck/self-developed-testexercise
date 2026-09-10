@@ -2,9 +2,7 @@ import os
 
 from openai import OpenAI
 
-from schemas import (
-    TicketClassification,
-)
+from schemas import TicketClassification, TicketPriority, TicketStatus
 
 client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
 
@@ -76,5 +74,12 @@ def classify_ticket(message: str) -> TicketClassification:
         instructions=instructions,
         input=message,
     )
+    classification = TicketClassification.model_validate_json(response.output_text)
 
-    return TicketClassification.model_validate_json(response.output_text)
+    # Enforce "manual_review_required"-flag, if the priority is critical!
+    if classification.priority == TicketPriority.critical:
+        classification.status = TicketStatus.manual_review_required
+    else:
+        classification.status = TicketStatus.open
+
+    return classification
