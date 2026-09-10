@@ -4,6 +4,8 @@ A small FastAPI service for creating and classifying support tickets using an LL
 
 The API accepts a support ticket as free-form text. The ticket is then automatically classified by an LLM into a category, priority, responsible team, summary, and status. The original ticket and its classification are persisted in PostgreSQL.
 
+The App is deployed on Render with a production PostgreSQL Database hosted on Neon.
+
 ## Live Application
 
 **API:** [https://self-developed-testexercise.onrender.com/](https://self-developed-testexercise.onrender.com/)
