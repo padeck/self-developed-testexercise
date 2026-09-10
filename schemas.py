@@ -33,12 +33,7 @@ class AssignedTeam(str, Enum):
 
 
 class TicketCreate(BaseModel):
-    message: str
-    category: TicketCategory
-    priority: TicketPriority
-    assigned_team: str = Field(alias="assignedTeam")
-    summary: str
-    status: TicketStatus
+    message: str = Field(min_length=1, max_length=5000)
 
 
 class TicketResponse(BaseModel):
